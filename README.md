@@ -2,6 +2,8 @@
 
 ![picture alt](https://github.com/rmhubley/AlignmentSummaryViewer/blob/master/conf/AlignmentSummaryViewer.png "Screenshot of example multiple alignemnt")
 
+Live Example: [http://jsfiddle.net](http://jsfiddle.net/9h2oqgLk/)
+
 ## Introduction
 
 The Alignment Summary Viewer is a visualization component for 
