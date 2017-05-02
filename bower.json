@@ -1,0 +1,14 @@
+{
+  "name": "AlignmentSummaryViewer",
+  "version": "1.0.0",
+  "dependencies": {
+    "angular": "1.5.5"
+  },
+  "devDependencies": {
+    "flightplan": "git://github.com/pstadler/flightplan.git#0.6.15"
+  },
+  "resolutions": {
+    "angular": "1.5.5"
+  }
+}
+
