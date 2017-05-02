@@ -136,9 +136,17 @@
   };
 
   AlignmentSummaryViewer.prototype.resetHeight = function() {
-    this.align_canvas.style.width = '100%';
-    this.align_canvas.style.height = '100%';
-    this.align_canvas.width = this.align_canvas.offsetWidth;
+    // We don't want the canvas to get scaled through CSS.  This
+    // mechanism treats the canvas as an image and blurs the heck
+    // out of it.  In order to automatically get it fill the
+    // size of the viewable area *and* not blur *and* not
+    // go under the potential scrollbar is to do what I did
+    // below:
+    //   old -- causes blur: this.align_canvas.style.width = '100%';
+    //                       this.align_canvas.style.height = '100%';
+    //                       this.align_canvas.width = this.align_canvas.offsetWidth;
+    //   new:
+    this.align_canvas.width = window.innerWidth - 20;
     this.align_canvas.height = this.minTopMargin +
     this.coverageGraphHeight +
     this.rulerHeight +
