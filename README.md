@@ -1,5 +1,7 @@
 # Alignment Summary Viewer
 
+![picture alt](https://github.com/rmhubley/AlignmentSummaryViewer/blob/master/conf/AlignmentSummaryViewer.png "Screenshot of example multiple alignemnt")
+
 ## Introduction
 
 The Alignment Summary Viewer is a visualization component for 
