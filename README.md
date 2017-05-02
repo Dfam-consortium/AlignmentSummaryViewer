@@ -1,6 +1,6 @@
-Alignment Summary Viewer
+# Alignment Summary Viewer
 
-# Introduction
+## Introduction
 
 The Alignment Summary Viewer is a visualization component for 
 biological multiple sequence alignments ( DNA or protein ).  It 
@@ -26,27 +26,27 @@ of the data onto the server.
 The component expects a JSON object containing summary information and
 and array of per sequence details.  
 
-# Summary Fields
+## Summary Fields
 
-- length: The overall length of the multiple alignment not including insertion/deletion columns.
-- qualityBlockLen: The length of the non-overlapping quality windows over each sequence.
-- num_alignments: The number of sequences aligned ( length of alignments array ).
-- alignments: The array of aligned sequence records.
+- __length__: The overall length of the multiple alignment not including insertion/deletion columns.
+- __qualityBlockLen__: The length of the non-overlapping quality windows over each sequence.
+- __numAlignments__: The number of sequences aligned ( length of alignments array ).
+- __alignments__: The array of aligned sequence records.
 
-# Aligned Sequence Record
+## Aligned Sequence Record
 Array containing the following ordered fields:
-- 0: The sequence identifier.
-- 1: Start position in the multiple alignment.
-- 2: Length of aligned sequence ( not including insertion/deletion positions ).
-- 3: An array contain the quality values ( 1-lowest to 10-highest) for each qualityBlockLen length window over the sequence. The last value may represent a window less than qualityBlockLen length.
-- 4: The orientation of the aligned sequence ( "F"-forward, "R"-reverse ).
-- 5: The start position within the aligned sequence.
-- 6: The end position within the aligned sequence. 
+- __0__: The sequence identifier.
+- __1__: Start position in the multiple alignment.
+- __2__: Length of aligned sequence ( not including insertion/deletion positions ).
+- __3__: An array contain the quality values ( 1-lowest to 10-highest) for each qualityBlockLen length window over the sequence. The last value may represent a window less than qualityBlockLen length.
+- __4__: The orientation of the aligned sequence ( "F"-forward, "R"-reverse ).
+- __5__: The start position within the aligned sequence.
+- __6__: The end position within the aligned sequence. 
 
 The following is an example JSON object containing two sequences:
 
 ```
-   {
+    {
       "length": 804,
       "qualityBlockLen": 10,
       "num_alignments": 2,
