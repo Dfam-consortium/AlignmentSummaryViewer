@@ -2,7 +2,7 @@
 
 ![picture alt](https://github.com/rmhubley/AlignmentSummaryViewer/blob/master/conf/AlignmentSummaryViewer.png "Screenshot of example multiple alignemnt")
 
-Live Example: [http://jsfiddle.net](https://jsfiddle.net/k9kcLdu4/)
+Live Example: [http://jsfiddle.net](https://jsfiddle.net/5p6mstkf/)
 
 ## Introduction
 

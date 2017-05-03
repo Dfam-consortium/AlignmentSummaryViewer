@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Multiple sequence alignment visualization",
   "keywords": ["seed","alignment","dna", "protein", "stockholm", "dfam"],
-  "repository": "https://github.com",
+  "repository": "https://github.com/rmhubley/AlignmentSummaryViewer",
   "author": "Robert Hubley <rhubley@gmail.com>",
   "devDependencies": {
     "grunt": "^0.4.5",
