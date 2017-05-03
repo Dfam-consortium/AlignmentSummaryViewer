@@ -1,9 +1,10 @@
 (function(global) {
   'use strict';
 
-  function AlignmentSummaryViewer(align_canvas, json, _options) {
+  function AlignmentSummaryViewer(align_canvas, parent_element, json, _options) {
     this.json = json;
     this.align_canvas = align_canvas;
+    this.parent_element = parent_element;
 
     this.cursorImage = null;
     this.cursorImageStartX = 0;
@@ -32,7 +33,6 @@
     this.alignmentGraphStartY = this.rulerStartY + this.rulerHeight;
     this.legendStartY = this.alignmentGraphStartY + (this.json.alignments.length * (this.alignmentGlyphHeight + this.alignmentSpacing));
 
-    this.resetHeight();
 
     var obj = this;
 
@@ -62,23 +62,20 @@
       '#00ff66', '#00ffcc', '#00ccff', '#0066ff', '#0000ff'
     ];
 
-    // Constants to reduce lookup(?) in event listener
-    this.WIDTH = this.align_canvas.width;
-    this.HEIGHT = this.align_canvas.height;
-    this.pixelToBP = this.json.length / this.WIDTH;
     this.currRulerY = 0;
 
-    this.render('norm');
+    // Resize and render
+    this.resize();
   }
 
   AlignmentSummaryViewer.prototype.setData = function(json) {
     this.json = json;
     this.align_context.clearRect(0, 0, this.align_canvas.width,
-      this.align_canvas.height);
+                                 this.align_canvas.height);
     this.legendStartY = this.alignmentGraphStartY + (this.json.alignments.length * (this.alignmentGlyphHeight + this.alignmentSpacing));
     this.cursorImage = null;
-    this.resetHeight();
-    this.render('norm');
+    // resize and render
+    this.resize();
   };
 
   AlignmentSummaryViewer.prototype.renderCrosshair = function(x, y) {
@@ -135,7 +132,7 @@
     }
   };
 
-  AlignmentSummaryViewer.prototype.resetHeight = function() {
+  AlignmentSummaryViewer.prototype.resize = function() {
     // We don't want the canvas to get scaled through CSS.  This
     // mechanism treats the canvas as an image and blurs the heck
     // out of it.  In order to automatically get it fill the
@@ -146,13 +143,17 @@
     //                       this.align_canvas.style.height = '100%';
     //                       this.align_canvas.width = this.align_canvas.offsetWidth;
     //   new:
-    this.align_canvas.width = window.innerWidth - 20;
+    // this.align_canvas.width = window.innerWidth - 20;
+    //   newer:
+console.log('help...' + this.parent_element);
+    this.align_canvas.width = this.parent_element.offsetWidth;
     this.align_canvas.height = this.minTopMargin +
     this.coverageGraphHeight +
     this.rulerHeight +
     (this.json.alignments.length * (this.alignmentGlyphHeight + this.alignmentSpacing)) +
     this.legendHeight +
     this.minBottomMargin;
+    this.render('norm');
   };
 
 
@@ -303,16 +304,15 @@
         var sumCoverage = 0;
         // Whole depth components
         for (j = 0; j < Math.floor(unitsPerPixel); j += 1) {
-          sumCoverage += depth[curBase + j];
+          sumCoverage += depth[Math.floor(curBase) + j];
         }
         // Fractional depth component
-        sumCoverage += (depth[curBase + j + 1] * (unitsPerPixel % 1));
+        sumCoverage += (depth[Math.floor(curBase) + j + 1] * (unitsPerPixel % 1));
         var weightedAverageDepth = sumCoverage / unitsPerPixel;
-        curBase += Math.floor(unitsPerPixel);
+        curBase += unitsPerPixel;
 
-        this.align_context.lineTo(curX, starty + height - (weightedAverageDepth * depthScale) - 1);
-
-        // curDepth = starty + height - (weightedAverageDepth * depthScale) - 1;
+        this.align_context.lineTo(curX,
+                         starty + height - (weightedAverageDepth * depthScale) - 1);
         curX = curX + 1;
       }
       if (noFill === 0) {
@@ -333,7 +333,6 @@
         }
         this.align_context.lineTo(curX + pixelsPerUnit, starty + height - (coverage * depthScale) - 1);
 
-        // curDepth = starty + height - (coverage * depthScale) - 1;
         curX = curX + pixelsPerUnit;
       }
       if (noFill === 0) {
@@ -348,10 +347,10 @@
   };
 
 
-  // Nice utilty for assisting in axis tic generation borrowed from the Dfam website
-  // graphics.js - probably written by Jody Clements, Rob Finn or Travis Wheeler ( or all of them ).
+  // Nice utility for assisting in axis tic generation borrowed from
+  // the Dfam website graphics.js - probably written by Jody Clements,
+  // Rob Finn or Travis Wheeler ( or all of them ).
   AlignmentSummaryViewer.prototype.nice_bounds = function(axis_start, axis_end, num_ticks) {
-    // default value is 10
     num_ticks = num_ticks || 10;
     var true_axis_end = axis_end;
     var axis_width = axis_end - axis_start;
@@ -437,8 +436,8 @@
     this.cursorImage = null;
 
     // Clear overlayed canvases
-    // this.align_context.clearRect(0, 0, this.align_canvas.width,
-    //  this.align_canvas.height);
+    this.align_context.clearRect(0, 0, this.align_canvas.width,
+      this.align_canvas.height);
 
     var ctx = this.align_context;
     // Draw y-axis of evil

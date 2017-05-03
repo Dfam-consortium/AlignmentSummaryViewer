@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <body>
-    <div id="canvasesdiv">
+    <div id="canvasdiv">
       <canvas id="alignment_canvas" width="800" height="1600">Canvas not supported</canvas>
     </div>
     <script src='dist/AlignmentSummaryViewer.min.js'></script>
@@ -523,11 +523,12 @@
     // Load the viewer 
     var mySummary = new AlignmentSummaryViewer( 
                           document.getElementById('alignment_canvas'),
+                          document.getElementById('canvasdiv'),
                           summaryData, {});
     window.onresize = function(event) {
       if ( mySummary != null ) {
-        mySummary.resetHeight();
-        mySummary.render('norm');
+        // resize and render
+        mySummary.resize();
       }
     };
 

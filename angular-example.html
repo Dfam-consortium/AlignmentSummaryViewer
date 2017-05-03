@@ -1,24 +1,32 @@
 <!doctype html>
 <html>
+  <head>
+    <link rel='stylesheet prefetch' href='bower_components/angular-material/angular-material.min.css'>
+  </head>
   <body>
-    <div ng-app="myApp" ng-controller="testContrl" layout="row" resize>
+    <div ng-app="myApp" ng-controller="testContrl" layout="column" resize>
       <br>
       <br>
       <h3><b>Seed Coverage and Whisker Plots</b></h3>
       <hr> Representation of the #### seed alignment sequences, indicating their length distribution across the model as well as the overall depth of coverage.
       <br>
       <br>
-      <div layout="row" flex>
-        <div style="ddborder: 1px solid;">
-          <alignheatmap align-data="summaryData"></alignheatmap>
+      <div layout="column" flex>
+        <div layout="row" layout-margin>
+          <alignheatmap flex="95" align-data="summaryData"></alignheatmap>
         </div>
       </div>
-      <input type="button" value="Load Data" ng-click="addData();" />
+      <div layout="row">
+        <input type="button" value="Load Data" ng-click="addData();" />
+      </div>
     </div>
     <script src='bower_components/angular/angular.min.js'></script>
+    <script src='bower_components/angular-animate/angular-animate.min.js'></script>
+    <script src='bower_components/angular-aria/angular-aria.min.js'></script>
+    <script src='bower_components/angular-material/angular-material.min.js'></script>
     <script src='dist/AlignmentSummaryViewer.min.js'></script>
     <script>
-var myApp = angular.module('myApp', []);
+var myApp = angular.module('myApp', ['ngMaterial']);
 
 myApp.directive('resize', function($window) {
   return {
@@ -50,7 +58,11 @@ myApp.directive('alignheatmap', function() {
     link: function(scope, el, attrs) {
       var mySummary;
       var align_canvas = document.createElement('canvas');
-      el.append(align_canvas);
+      // The template div is a child of the directive (el)
+      // Since there is only one child the parent for the canvas
+      // will be:
+      var parent_element = el.children()[0];
+      parent_element.append(align_canvas);
 
       scope.$watch('alignData', function(newValue) {
         onDataChange();
@@ -58,8 +70,8 @@ myApp.directive('alignheatmap', function() {
 
       scope.$on('resize::resize', function() {
         if (mySummary != null) {
-          mySummary.resetHeight();
-          mySummary.render('norm');
+          // resize and render
+          mySummary.resize();
         }
       });
 
@@ -77,11 +89,10 @@ myApp.directive('alignheatmap', function() {
           if ( mySummary != null ) {
             mySummary.setData(scope.alignData);
           }else {
-            mySummary = new AlignmentSummaryViewer(align_canvas, scope.alignData, {});
+            mySummary = new AlignmentSummaryViewer(align_canvas, parent_element, scope.alignData, {});
           }
         }
       }
-
     }
   }
 });
