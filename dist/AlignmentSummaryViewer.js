@@ -19,13 +19,13 @@
     this.minBottomMargin = 10;
     this.coverageGraphHeight = 125;
     this.legendHeight = 30;
-    this.alignmentGlyphHeight = 1;
-    this.alignmentSpacing = 1;
+    this.alignmentGlyphHeight = 2;
+    this.alignmentSpacing = 0;
     this.rulerHeight = 20;
     this.yAxisFontSize = 10;
     this.rulerVerticalMargin = 10;
-    // Controls smoothing of alignment colors - Must be between 0 - 0.5
-    this.gradientWindowFrac = 0.3;
+    // Controls smoothing of alignment colors - Must be between 0 - 1
+    this.gradientWindowFrac = 0.1;
 
     // Convenience Layout Values
     this.coverageGraphStartY = this.minTopMargin;
@@ -58,8 +58,8 @@
     this.align_context = this.align_canvas.getContext('2d');
 
     // Heatmap Colors
-    this.qualColor = ['#ff6600', '#ffcc00', '#ccff00', '#66ff00', '#00ff00',
-      '#00ff66', '#00ffcc', '#00ccff', '#0066ff', '#0000ff'
+    this.qualColor = ['#ff6600', '#ff9900', '#ccff00', '#66ff00', '#00ff00',
+      '#99ff66', '#00ffcc', '#33ccff', '#3399ff', '#3333ff'
     ];
 
     this.currRulerY = 0;
@@ -142,10 +142,7 @@
     //   old -- causes blur: this.align_canvas.style.width = '100%';
     //                       this.align_canvas.style.height = '100%';
     //                       this.align_canvas.width = this.align_canvas.offsetWidth;
-    //   new:
-    // this.align_canvas.width = window.innerWidth - 20;
     //   newer:
-console.log('help...' + this.parent_element);
     this.align_canvas.width = this.parent_element.offsetWidth;
     this.align_canvas.height = this.minTopMargin +
     this.coverageGraphHeight +
@@ -429,7 +426,6 @@ console.log('help...' + this.parent_element);
     var alignments = this.json.alignments;
     var qualWidthBP = this.json.qualityBlockLen;
     var qualBlockPixelWidth = (qualWidthBP * xScale);
-    var gradientWindowAdj = qualBlockPixelWidth * gradientWindowFrac * 0.5;
     var alignmentDataHeight = alignments.length * (this.alignmentGlyphHeight + this.alignmentSpacing);
 
     // Clear cursor image
@@ -555,7 +551,6 @@ console.log('help...' + this.parent_element);
       var qualities = alignments[i][3];
       var qualIdx = 0;
 
-      var prevQualVal = qualities[0];
       var currQualVal;
       var nextQualVal;
 
@@ -581,18 +576,17 @@ console.log('help...' + this.parent_element);
 
 
         var grd = this.align_context.createLinearGradient(
-          blockXPos - gradientWindowAdj, 0,
-          blockXPos + qualBlockPixelWidth + gradientWindowAdj, 0);
+          blockXPos, 0,
+          blockXPos + qualBlockPixelWidth, 0);
 
-        grd.addColorStop(0, this.qualColor[prevQualVal - 1]);
-        grd.addColorStop(gradientWindowFrac, this.qualColor[currQualVal - 1]);
+        grd.addColorStop(0, this.qualColor[currQualVal - 1]);
         grd.addColorStop(1 - gradientWindowFrac, this.qualColor[currQualVal - 1]);
         grd.addColorStop(1, this.qualColor[nextQualVal - 1]);
 
-        prevQualVal = currQualVal;
-
         this.align_context.fillStyle = grd;
-        var blockSize = qualBlockPixelWidth;
+
+        // HACK: draw one base pair wider to avoid math errors
+        var blockSize = (qualWidthBP + 1) * xScale;
         if (j + qualWidthBP > alignments[i][2]) {
           // small block
           blockSize = (alignments[i][2] - j) * xScale;
