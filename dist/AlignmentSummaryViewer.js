@@ -532,7 +532,8 @@
     var curY = 0;
     var referenceDrawn = 0;
     if (order != 'orient') {
-      this.ruler(this.minLeftMargin, this.rulerStartY, viewWidth, rulerHeight, 1, this.json.length, 10, 100);
+      var x_ticks = this.nice_bounds(1, this.json.length, 10).steps;
+      this.ruler(this.minLeftMargin, this.rulerStartY, viewWidth, rulerHeight, 1, this.json.length, x_ticks / 10, x_ticks);
       this.currRulerY = 0;
       curY = rulerVerticalMargin + rulerHeight + coverageGraphHeight;
       referenceDrawn = 1;
