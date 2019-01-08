@@ -586,10 +586,10 @@
 
         this.align_context.fillStyle = grd;
 
-        // HACK: draw one base pair wider to avoid math errors
-        var blockSize = (qualWidthBP + 1) * xScale;
-        if (j + qualWidthBP > alignments[i][2]) {
-          // small block
+        // HACK: Draw inner blocks one half base pair wider to avoid "seams" caused by rounding errors
+        var blockSize = (qualWidthBP + 0.5) * xScale;
+        if (j + qualWidthBP >= alignments[i][2]) {
+          // Don't add filler on the last block
           blockSize = (alignments[i][2] - j) * xScale;
         }
         this.align_context.fillRect(blockXPos,
