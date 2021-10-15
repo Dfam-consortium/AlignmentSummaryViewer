@@ -257,6 +257,10 @@
       }
     }
 
+    if (maxDepth < 10) {
+      maxDepth = 10;
+    }
+
     // draw coverage-graph y-axis maximum value
     var textWidth = this.align_context.measureText('' + maxDepth).width;
     ctx.fillText('' + maxDepth, this.minLeftMargin - textWidth - 8, starty + this.yAxisFontSize);
@@ -267,7 +271,7 @@
 
     // draw y-ticks ( also borrowed from graphic.js )
     var y_start = 0;
-    var y_ticks = this.nice_bounds(0, parseInt(maxDepth), 5);
+    var y_ticks = this.nice_bounds(0, maxDepth, 5);
     var y_max_bottom = 10;
     for (y_start = y_ticks.steps; y_start < y_ticks.max; y_start += y_ticks.steps) {
       var y = (starty + height) - (this.scale(y_start, maxDepth, dataHeight));
@@ -279,8 +283,10 @@
       ctx.moveTo(x, y);
       ctx.lineTo(x - 5, y);
       ctx.stroke();
-      textWidth = this.align_context.measureText('' + y_start).width;
-      ctx.fillText(y_start, x - textWidth - 8, y);
+
+      var y_text = '' + y_start;
+      textWidth = ctx.measureText(y_text).width;
+      ctx.fillText(y_text, x - textWidth - 8, y);
     }
 
 
@@ -326,12 +332,15 @@
 
       for (i = 0; i < this.json.length; i += 1) {
         var coverage = depth[i];
-        if (coverage > 399) {
-        }
-        this.align_context.lineTo(curX + pixelsPerUnit, starty + height - (coverage * depthScale) - 1);
+        // This point is located at the top-left corner of the ith segment
+        this.align_context.lineTo(curX, starty + height - (coverage * depthScale) - 1);
 
         curX = curX + pixelsPerUnit;
       }
+      // This point is located at the top-left corner of just past
+      // the last segment, closing the top part of the line.
+      this.align_context.lineTo(curX, starty + height - (coverage * depthScale) - 1);
+
       if (noFill === 0) {
         this.align_context.lineTo(curX, starty + height - 1);
         this.align_context.lineTo(0, starty + height - 1);
