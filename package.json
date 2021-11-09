@@ -1,6 +1,6 @@
 {
   "name": "AlignmentSummaryViewer",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Multiple sequence alignment visualization",
   "keywords": ["seed","alignment","dna", "protein", "stockholm", "dfam"],
   "repository": "https://github.com/rmhubley/AlignmentSummaryViewer",
