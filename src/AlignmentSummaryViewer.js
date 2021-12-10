@@ -462,7 +462,7 @@
 
     // draw whisker plot y-axis minimum value
     var textWidth = this.align_context.measureText('1').width;
-    ctx.fillText('1', this.minLeftMargin - textWidth - 8, this.alignmentGraphStartY + (this.yAxisFontSize / 2));
+    ctx.fillText('1', this.minLeftMargin - textWidth - 8, this.alignmentGraphStartY);
     ctx.beginPath();
     ctx.moveTo(this.minLeftMargin, this.alignmentGraphStartY + 1);
     ctx.lineTo(this.minLeftMargin - 5, this.alignmentGraphStartY + 1);
@@ -470,7 +470,7 @@
 
     // draw whisker plot y-axis maximum value
     textWidth = this.align_context.measureText('' + alignments.length).width;
-    ctx.fillText('' + alignments.length, this.minLeftMargin - textWidth - 8, this.alignmentGraphStartY + alignmentDataHeight);
+    ctx.fillText('' + alignments.length, this.minLeftMargin - textWidth - 8, this.alignmentGraphStartY + alignmentDataHeight + this.yAxisFontSize);
     ctx.beginPath();
     ctx.moveTo(this.minLeftMargin, this.alignmentGraphStartY + alignmentDataHeight);
     ctx.lineTo(this.minLeftMargin - 5, this.alignmentGraphStartY + alignmentDataHeight);
