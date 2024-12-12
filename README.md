@@ -92,4 +92,11 @@ HTML code to display a static dataset:
 
 See the angular-example.html file for using the component as a Angular directive.
 
-
+## Dev
+For distribution/npm installation:
+```
+npm install
+npm install -g grunt-cli
+grunt
+```
+Then tag and push commits and tag to GitHub. Last, update `package.json` in dependant projects.

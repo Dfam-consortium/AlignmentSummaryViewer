@@ -206,7 +206,7 @@
   AlignmentSummaryViewer.prototype.coverageGraph = function(starty, height) {
     var noFill = 0;
     var alignments = this.json.alignments;
-    var depth = [];
+    var depth = new Array(this.json.length).fill(0);
     var unitsPerPixel = this.json.length / (this.align_canvas.width - this.minLeftMargin);
     var pixelsPerUnit = (this.align_canvas.width - this.minLeftMargin) / this.json.length;
     var ctx = this.align_context;
